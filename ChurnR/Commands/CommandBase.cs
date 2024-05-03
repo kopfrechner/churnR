@@ -1,3 +1,10 @@
+using System.Globalization;
+using System.Text;
+using ChurnR.Core.Analyzers;
+using ChurnR.Core.Processors;
+using ChurnR.Core.Processors.Cutoff;
+using ChurnR.Core.Reporters;
+using ChurnR.Core.VcsAdapter;
 using CommandLine;
 using Serilog;
 
@@ -54,11 +61,70 @@ abstract class CommandBase
     public int Run()
     {
         LogOptions();
+     
+        //
+        // set up cutoff
+        //
+        IProcessor cutoffProcessor = 
+            float.TryParse(MinimalChurnRate, out var minChurnPercent) ? 
+                new PercentCutoffProcessor(minChurnPercent) :
+            int.TryParse(MinimalChurnRate, out var minChurn) ? 
+                new MinimalCutoffProcessor(minChurn) :
+                new MinimalCutoffProcessor(0);
+        
+        //
+        // set up analyzer
+        //
+        
+        var analyzer = new Analyzer(VcsAdapter);
+                
+        if (IncludePattern is not null) analyzer.AddInclude(IncludePattern);
+        if (ExcludePatterns.Any()) analyzer.AddExcludes(ExcludePatterns);
+        if (InputFile != null && !File.Exists(InputFile))
+        {
+            Log.Error("Cannot find file {0} to read from.", InputFile);
+            return ERROR_CODE;
+        }
+        
+        
+        //
+        // perform analysis
+        //
+        var analysisResult =
+            InputFile != null  
+                ? analyzer.Analyze(File.ReadAllText(InputFile)) : 
+            TryGetCalculateStartDate(FromDate, out var startDate)
+                ? analyzer.Analyze(startDate)
+                : analyzer.Analyze();
+        
+        Console.OutputEncoding = Encoding.UTF8;
+        IAnalysisReporter reporter = Report switch
+        {
+            Reporter.Table => new TableReporter(Console.Out),
+            Reporter.Xml => new XmlReporter(Console.Out),
+            Reporter.Csv => new CsvReporter(Console.Out),
+            _ => new SimpleReporter(Console.Out)
+        };
+        reporter.Write(analysisResult, cutoffProcessor, TopRecords ?? int.MaxValue);
         
         return Execute() 
             ? SUCCESS_CODE  
             : ERROR_CODE;
     }
+
+    protected abstract IVcsAdapter VcsAdapter { get; }
+
+    private bool TryGetCalculateStartDate(string? dateString, out DateTime startDate)
+    {
+        if (int.TryParse(dateString, out var daysBack))
+        {
+            startDate = DateTime.Now.Subtract(TimeSpan.FromDays(daysBack));
+            return true;
+        }
+
+        return DateTime.TryParseExact(dateString, "dd-M-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out startDate);
+    }
+
 
     private void LogOptions()
     {

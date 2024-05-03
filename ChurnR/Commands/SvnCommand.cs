@@ -1,3 +1,4 @@
+using ChurnR.Core.VcsAdapter;
 using CommandLine;
 
 namespace ChurnR.Commands;
@@ -9,6 +10,8 @@ class SvnCommand : CommandBase
         Required = false, 
         HelpText = @"Add to PATH. i.e. for svn.exe you might add ""c:\tools"". Can add multiple with ;.")]
     public string? EnvPath { get; set; }
+
+    protected override IVcsAdapter VcsAdapter => new SvnAdapter();
     
     protected override void LogSpecificOptions()
     {
