@@ -1,0 +1,8 @@
+* Make it a dotnet tool
+* Refactor options parsing and execution
+* Create pipeline
+* Push to nuget
+* Create pull request back to forked repo
+* Add file target instead of console target
+* think about some test cases
+* instead of key value pairs, use something else
