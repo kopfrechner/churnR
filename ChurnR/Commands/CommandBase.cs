@@ -14,7 +14,8 @@ enum Reporter
 {
     Table,
     Xml, 
-    Csv
+    Csv,
+    ChartJs
 }
 
 abstract class CommandBase
@@ -103,6 +104,7 @@ abstract class CommandBase
             Reporter.Table => new TableReporter(Console.Out),
             Reporter.Xml => new XmlReporter(Console.Out),
             Reporter.Csv => new CsvReporter(Console.Out),
+            Reporter.ChartJs => new ChartJsReporter(Console.Out),
             _ => new SimpleReporter(Console.Out)
         };
         reporter.Write(analysisResult, cutoffProcessor, TopRecords ?? int.MaxValue);

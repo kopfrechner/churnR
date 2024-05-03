@@ -12,7 +12,7 @@ public class CsvReporter(TextWriter output) : BaseAnalysisReporter(output)
 
         foreach (var kvp in fileChurns)
         {
-            sb.Append($"\"{kvp.Key}\"{Sep}{kvp.Value}");
+            sb.AppendLine($"\"{kvp.Key}\"{Sep}{kvp.Value}");
         }
         
         Out.Write(sb.ToString());
