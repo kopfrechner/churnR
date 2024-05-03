@@ -8,13 +8,13 @@ public class SvnAdapter : VcsAdapterBase
     private readonly Regex _matcher = new(@"\W*[A,M]\W+(\/.*)\b",RegexOptions.Compiled);
     public override IEnumerable<string> ChangedResources()
     {
-        var text = DataSource.GetDataWithQuery("svn log --verbose");
+        var text = DataSource.GetDataWithQuery("svn", "log --verbose");
         return Parse(text);
     }
 
     public override IEnumerable<string> ChangedResources(DateTime backTo)
     {
-        var text = DataSource.GetDataWithQuery($"svn log --revision {{{backTo:yyyy-MM-dd}}}:{{{DateTime.Now:yyyy-MM-dd}}} --verbose");
+        var text = DataSource.GetDataWithQuery("svn", $"log --revision {{{backTo:yyyy-MM-dd}}}:{{{DateTime.Now:yyyy-MM-dd}}} --verbose");
         return Parse(text);
     }
 

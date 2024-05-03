@@ -17,10 +17,4 @@ class SvnCommand : CommandBase
     {
         LogOption(EnvPath, nameof(EnvPath));
     }
-    
-    protected override bool Execute()
-    {
-        Console.WriteLine($"svn {Report}");
-        return true;
-    }
 }

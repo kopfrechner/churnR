@@ -107,9 +107,7 @@ abstract class CommandBase
         };
         reporter.Write(analysisResult, cutoffProcessor, TopRecords ?? int.MaxValue);
         
-        return Execute() 
-            ? SUCCESS_CODE  
-            : ERROR_CODE;
+        return SUCCESS_CODE;
     }
 
     protected abstract IVcsAdapter VcsAdapter { get; }
@@ -143,6 +141,4 @@ abstract class CommandBase
     {
         if (property is not null) Logger.Information("{0} {1}", propertyName, property);
     }
-
-    protected abstract bool Execute();
 }

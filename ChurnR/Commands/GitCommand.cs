@@ -1,4 +1,3 @@
-using ChurnR.Core.Analyzers;
 using ChurnR.Core.VcsAdapter;
 using CommandLine;
 
@@ -8,9 +7,4 @@ namespace ChurnR.Commands;
 class GitCommand : CommandBase
 {
     protected override IVcsAdapter VcsAdapter => new GitAdapter();
-
-    protected override bool Execute()
-    {
-        return true;
-    }
 }
