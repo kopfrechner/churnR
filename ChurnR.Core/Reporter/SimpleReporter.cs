@@ -1,4 +1,5 @@
-﻿using ChurnR.Core.CutoffProcessor;
+﻿using ChurnR.Core.Analyzer;
+using ChurnR.Core.CutoffProcessor;
 using Serilog;
 
 namespace ChurnR.Core.Reporter;
@@ -7,11 +8,11 @@ public class SimpleReporter(TextWriter output, IProcessor cutOffProcessor) : Bas
 {
     private static readonly ILogger Logger = Log.Logger;
     
-    protected override void WriteImpl(IEnumerable<KeyValuePair<string, int>> fileChurns)
+    protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
     {
-        foreach (var kvp in fileChurns)
+        foreach (var fileStatistics in fileChurns)
         {
-            Logger.Information("{0} > {1}", kvp.Key, kvp.Value);
+            Logger.Information("{0} > {1}", fileStatistics.FileName, fileStatistics.CommitCount);
         }
     }
 }

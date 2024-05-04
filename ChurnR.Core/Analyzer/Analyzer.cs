@@ -27,14 +27,20 @@ public class Analyzer(IVcsAdapter adapter) : IAnalyzer
 
     private AnalysisResult AnalyzeChangedResources(IEnumerable<string> changedResources)
     {
-        var d = new Dictionary<string, int>();
+        var fileChurns = new Dictionary<string, FileStatistics>();
 
-        foreach (var x in ApplyExcludeIncludes(changedResources))
+        foreach (var file in ApplyExcludeIncludes(changedResources))
         {
-            d.TryAdd(x, 0);
-            d[x]++;
+            fileChurns.TryAdd(file, new FileStatistics { FileName = file });
+            fileChurns[file].CommitCount++;
         }
-        return new AnalysisResult {FileChurn = d.OrderByDescending(x=>x.Value).ThenBy( x=>x.Key)};
+
+        return new AnalysisResult
+        {
+            FileChurn = fileChurns.Values
+                .OrderByDescending(x => x.CommitCount)
+                .ThenBy(x => x.FileName)
+        };
     }
 
     private IEnumerable<string> ApplyExcludeIncludes(IEnumerable<string> changedResources)

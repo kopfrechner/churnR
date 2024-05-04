@@ -1,17 +1,19 @@
-﻿namespace ChurnR.Core.CutoffProcessor;
+﻿using ChurnR.Core.Analyzer;
+
+namespace ChurnR.Core.CutoffProcessor;
 
 public class PercentCutoffProcessor(float percent) : IProcessor
 {
-    public IEnumerable<KeyValuePair<string, int>> Apply(IEnumerable<KeyValuePair<string, int>> input)
+    public IEnumerable<FileStatistics> Apply(IEnumerable<FileStatistics> input)
     {
         //quick n dirty.
-        var sum = input.Sum(x => x.Value);
+        var sum = input.Sum(x => x.CommitCount);
         var tt = sum * percent;
         var count = 0;
         var tempsum = 0;
-        foreach (var keyValuePair in input)
+        foreach (var fileStatistics in input)
         {
-            tempsum += keyValuePair.Value;
+            tempsum += fileStatistics.CommitCount;
             if (tempsum > tt)
                 break;
             count++;

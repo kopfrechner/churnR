@@ -1,17 +1,18 @@
 ﻿using System.Runtime.Serialization;
 using System.Xml;
+using ChurnR.Core.Analyzer;
 using ChurnR.Core.CutoffProcessor;
 
 namespace ChurnR.Core.Reporter;
 
 public class XmlReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {
-    protected override void WriteImpl(IEnumerable<KeyValuePair<string, int>> fileChurns)
+    protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
     {
         var xr = new NChurnAnalysisResult
         {
             FileChurns = fileChurns
-                .Select(x => new FileChurn { File = x.Key, Value = x.Value })
+                .Select(x => new FileChurn { File = x.FileName, Value = x.CommitCount })
                 .ToList()
         };
 

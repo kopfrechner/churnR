@@ -1,13 +1,14 @@
-﻿using ChurnR.Core.CutoffProcessor;
+﻿using ChurnR.Core.Analyzer;
+using ChurnR.Core.CutoffProcessor;
 
 namespace ChurnR.Core.Reporter;
 
 public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {
-    protected override void WriteImpl(IEnumerable<KeyValuePair<string, int>> fileChurns)
+    protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
     {
-        labelsString = "\"" + string.Join("\",\"", fileChurns.Select(x => x.Key.Trim('"'))) + "\"";
-        churnsString = string.Join(",", fileChurns.Select(x => x.Value));
+        labelsString = "\"" + string.Join("\",\"", fileChurns.Select(x => x.FileName.Trim('"'))) + "\"";
+        churnsString = string.Join(",", fileChurns.Select(x => x.CommitCount));
 
         Out.Write(HtmlTemplate);
     }

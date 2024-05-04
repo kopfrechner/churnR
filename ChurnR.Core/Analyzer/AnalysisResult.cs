@@ -2,5 +2,5 @@
 
 public class AnalysisResult
 {
-    public IOrderedEnumerable<KeyValuePair<string, int>> FileChurn { get; set; }
+    public required IOrderedEnumerable<FileStatistics> FileChurn { get; set; }
 }

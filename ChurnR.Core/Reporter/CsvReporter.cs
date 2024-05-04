@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using ChurnR.Core.Analyzer;
 using ChurnR.Core.CutoffProcessor;
 
 namespace ChurnR.Core.Reporter;
@@ -7,13 +8,13 @@ public class CsvReporter(TextWriter output, IProcessor cutOffProcessor) : BaseRe
 {
     private const string Sep = ",";
     
-    protected override void WriteImpl(IEnumerable<KeyValuePair<string, int>> fileChurns)
+    protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
     {
         var sb = new StringBuilder();
 
-        foreach (var kvp in fileChurns)
+        foreach (var fileStatistics in fileChurns)
         {
-            sb.AppendLine($"\"{kvp.Key}\"{Sep}{kvp.Value}");
+            sb.AppendLine($"\"{fileStatistics.FileName}\"{Sep}{fileStatistics.CommitCount}");
         }
         
         Out.Write(sb.ToString());

@@ -19,5 +19,5 @@ public abstract class BaseReporter(TextWriter output, IProcessor cutOffProcessor
         Out.Flush();
     }
     
-    protected abstract void WriteImpl(IEnumerable<KeyValuePair<string, int>> fileChurns);
+    protected abstract void WriteImpl(IEnumerable<FileStatistics> fileChurns);
 }
