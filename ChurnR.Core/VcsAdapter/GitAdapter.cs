@@ -12,7 +12,7 @@ public class GitAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSour
     
     // 1       1       ChurnR/{Engine/ChurnREngine.cs => EngineBlubb/ChurnREngineBlubb.cs}
     private readonly Regex _churnLineMatcherWithFileChanged = 
-        new("^([0-9]{1,8})\\s{1,8}([0-9]{1,8})\\s{1,8}(.*)(\\{)(.*) => (.*)\\}(.*)$", RegexOptions.Compiled);
+        new("^([0-9]{1,8})\\s{1,8}([0-9]{1,8})\\s{1,8}(.*)\\{(.*) => (.*)\\}(.*)$", RegexOptions.Compiled);
     
     // 5       1       ChurnR.Core/VcsAdapter/GitAdapter.cs
     private readonly Regex _churnLineMatcher = 
