@@ -1,8 +1,9 @@
 using System.Diagnostics;
+using Serilog;
 
 namespace ChurnR.Core.Support;
 
-public class AdapterDataSource : IAdapterDataSource
+public class AdapterDataSource(ILogger logger) : IAdapterDataSource
 {
     public IEnumerable<string> GetDataWithQuery(string program, string args = "")
     {
@@ -18,13 +19,19 @@ public class AdapterDataSource : IAdapterDataSource
             }
         };
         
+        logger.Information("Gather VCS information: {0} {1}", program, args);
         process.Start();
+
+        var processedLines = 0;
+        var skippedLines = 0;
         
         while (!process.StandardOutput.EndOfStream)
         {
             var line = process.StandardOutput.ReadLine();
+            processedLines++;
             if (string.IsNullOrWhiteSpace(line))
             {
+                skippedLines++;
                 continue;
             }
             
@@ -33,5 +40,6 @@ public class AdapterDataSource : IAdapterDataSource
         }
         
         process.WaitForExit();
+        logger.Information("VCS information gathered successfully: Processed {0} lines, skipped {1}", processedLines, skippedLines);
     }
 }

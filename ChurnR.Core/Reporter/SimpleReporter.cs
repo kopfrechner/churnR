@@ -4,15 +4,21 @@ using Serilog;
 
 namespace ChurnR.Core.Reporter;
 
-public class SimpleReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
+public class SimpleReporter(ILogger logger, TextWriter output, IProcessor cutOffProcessor) : BaseReporter(logger, output, cutOffProcessor)
 {
-    private static readonly ILogger Logger = Log.Logger;
-    
-    protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
+    protected override void WriteImpl(IEnumerable<FileStatistics> fileStatistics)
     {
-        foreach (var fileStatistics in fileChurns)
+        Logger.Information("Generating simple report");
+        
+        foreach (var fileStatistic in fileStatistics)
         {
-            Logger.Information("{0} > {1}", fileStatistics.FileName, fileStatistics.CommitCount);
+            Logger.Information("{0} > {1} commits | +{2} | -{3} | \u00b1 {4} | \u2300 {5} lines/commit", 
+                fileStatistic.FileName, 
+                fileStatistic.CommitCount,
+                fileStatistic.LinesAdded,
+                fileStatistic.LinesDeleted,
+                fileStatistic.TotalLineChurns,
+                fileStatistic.AverageLineChurnsPerCommit);
         }
     }
 }

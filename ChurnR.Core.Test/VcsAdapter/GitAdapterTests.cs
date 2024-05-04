@@ -3,22 +3,15 @@ using FluentAssertions;
 
 namespace ChurnR.Core.Test.VcsAdapter;
 
-public class GitAdapterTests: IClassFixture<GitAdapterFixture>
+public class GitAdapterTests(GitAdapterFixture gitAdapterFixture) : IClassFixture<GitAdapterFixture>
 {
-    private readonly GitAdapterFixture _gitAdapterFixture;
-
-    public GitAdapterTests(GitAdapterFixture gitAdapterFixture)
-    {
-        _gitAdapterFixture = gitAdapterFixture;
-    }
-
     [Theory]
     [InlineData("ff88c2849d7e2dcb55d265eb62620c1b07638ea8 split path and file, not properly working now...")]
     [InlineData("just a random line that should be able to be parsed and thus skipped")]
     public void should_skip_these_lines(string line)
     {
         // Arrange
-        var gitAdapter = _gitAdapterFixture.CreateGitAdapterForLine(line);
+        var gitAdapter = gitAdapterFixture.CreateGitAdapterForLine(line);
         
         // Act
         var fileStatistics = gitAdapter.ChangedResources(null);
@@ -40,13 +33,13 @@ public class GitAdapterTests: IClassFixture<GitAdapterFixture>
         params string[] expectedHistoryFileNames)
     {
         // Arrange
-        var gitAdapter = _gitAdapterFixture.CreateGitAdapterForLine(line);
+        var gitAdapter = gitAdapterFixture.CreateGitAdapterForLine(line);
 
         // Act
         var fileStatistics = gitAdapter.ChangedResources(null).ToList();
 
         // Assert
-        fileStatistics.Count().Should().Be(1);
+        fileStatistics.Count.Should().Be(1);
         fileStatistics.First().Should().BeEquivalentTo(
             new FileStatistics
             {

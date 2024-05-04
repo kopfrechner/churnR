@@ -2,16 +2,19 @@
 using System.Xml;
 using ChurnR.Core.Analyzer;
 using ChurnR.Core.CutoffProcessor;
+using Serilog;
 
 namespace ChurnR.Core.Reporter;
 
-public class XmlReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
+public class XmlReporter(ILogger logger, TextWriter output, IProcessor cutOffProcessor) : BaseReporter(logger, output, cutOffProcessor)
 {
-    protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
+    protected override void WriteImpl(IEnumerable<FileStatistics> fileStatistics)
     {
+        Logger.Information("Generating XML report");
+        
         var xr = new NChurnAnalysisResult
         {
-            FileChurns = fileChurns
+            FileChurns = fileStatistics
                 .Select(x => new FileChurn { File = x.FileName, Value = x.CommitCount })
                 .ToList()
         };

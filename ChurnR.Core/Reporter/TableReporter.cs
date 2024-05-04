@@ -1,27 +1,30 @@
 ﻿using System.Text;
 using ChurnR.Core.Analyzer;
 using ChurnR.Core.CutoffProcessor;
+using Serilog;
 
 namespace ChurnR.Core.Reporter;
 
-public class TableReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
+public class TableReporter(ILogger logger, TextWriter output, IProcessor cutOffProcessor) : BaseReporter(logger, output, cutOffProcessor)
 {
-    protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
+    protected override void WriteImpl(IEnumerable<FileStatistics> fileStatistics)
     {
-        var max = fileChurns.Max(x => x.FileName.Length);
-        var i = fileChurns.Max(x => x.CommitCount).ToString().Length;
+        Logger.Information("Generating table report");
+        
+        var max = fileStatistics.Max(x => x.FileName.Length);
+        var i = fileStatistics.Max(x => x.CommitCount).ToString().Length;
         
         // padding
         var total = max + i + 3; //separators | .. | .. |
         var hline = "+".PadRight(total+3, '-')+"+";
         var sb = new StringBuilder();
         sb.AppendLine(hline);
-        foreach (var fileStatistics in fileChurns)
+        foreach (var fileStatistic in fileStatistics)
         {
             sb.Append("| ")
-                    .Append(fileStatistics.FileName.PadRight(max))
+                    .Append(fileStatistic.FileName.PadRight(max))
                 .Append(" | ")
-                    .Append(fileStatistics.CommitCount.ToString().PadRight(i))
+                    .Append(fileStatistic.CommitCount.ToString().PadRight(i))
                 .AppendLine(" |");
         }
         

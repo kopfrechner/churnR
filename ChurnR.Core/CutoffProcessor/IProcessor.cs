@@ -4,6 +4,6 @@ namespace ChurnR.Core.CutoffProcessor;
 
 public interface IProcessor
 {
-    IEnumerable<FileStatistics> Apply(IEnumerable<FileStatistics> input);
+    IEnumerable<FileStatistics> Apply(IEnumerable<FileStatistics> input, string? targetValue);
 }
 
