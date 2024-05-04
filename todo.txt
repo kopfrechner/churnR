@@ -1,4 +1,3 @@
-* Make it a dotnet tool
 * Refactor options parsing and execution
 * Create pipeline
 * Push to nuget
