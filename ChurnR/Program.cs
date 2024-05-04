@@ -15,7 +15,7 @@ parserResult.WithParsed<SvnOptions>(svnOptions => services.AddChurnR(svnOptions)
 await using var provider = services.BuildServiceProvider();
 using var serviceScope = provider.CreateScope();
 
-var engine = serviceScope.ServiceProvider.GetRequiredService<ChurnREngine>();
+var engine = serviceScope.ServiceProvider.GetRequiredService<Engine>();
 var result = engine.Run();
 
 Exit(result);

@@ -5,7 +5,7 @@ using ChurnR.Options;
 
 namespace ChurnR;
 
-public class ChurnREngine(
+public class Engine(
     IAnalyzer analyzer,
     IReporter reporter,
     OptionsBase options)

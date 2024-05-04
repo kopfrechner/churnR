@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
             .CreateLogger());
         
         // engine
-        serviceCollection.AddTransient<ChurnREngine>();
+        serviceCollection.AddTransient<Engine>();
         
         // options
         serviceCollection.AddSingleton(gitOptions);
