@@ -92,7 +92,7 @@ Any combination of parameters work.
 
 Here is a sample of a run, which cuts off at 8, and uses the default table report:
 
-	$ ChurnR -c 8
+	$ ChurnR git -c 8
 	+--------------------------------------------------+
 	| lib/rubikon/application/instance_methods.rb | 48 |
 	| lib/rubikon/application.rb                  | 30 |
@@ -116,7 +116,7 @@ Here is a sample of a run, which cuts off at 8, and uses the default table repor
 
 And here is an example of taking the top 4 records on ChurnR's git repo, output as xml report.
 
-	$ ChurnR -t 4 -r xml
+	$ ChurnR git -t 4 -r xml
 	<?xml version="1.0" encoding="utf-8"?>
 	<ChurnRAnalysisResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
 	  <FileChurns>
