@@ -7,14 +7,14 @@ public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : Ba
 {
     protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
     {
-        labelsString = "\"" + string.Join("\",\"", fileChurns.Select(x => x.FileName.Trim('"'))) + "\"";
-        churnsString = string.Join(",", fileChurns.Select(x => x.CommitCount));
-
+        commitCount = string.Join(",", fileChurns.OrderByDescending(x => x.CommitCount).Select(x => "{" + $"x:'{x.FileName}',y:{x.CommitCount}" + "}"));
+        lineChurns = string.Join(",", fileChurns.OrderByDescending(x => x.TotalLineChurns).Select(x => "{" + $"x:'{x.FileName}',y:{x.TotalLineChurns}" + "}"));
+        
         Out.Write(HtmlTemplate);
     }
 
-    private static string labelsString = "";
-    private static string churnsString = "";
+    private static string commitCount = "";
+    private static string lineChurns = "";
     
     private string HtmlTemplate => @"
 <!DOCTYPE html>
@@ -26,19 +26,23 @@ public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : Ba
       <script src=""https://cdn.jsdelivr.net/npm/chart.js""></script>
       <script>
          const ctx = document.getElementById('ChurnR');
-         
-         const labels = ["+labelsString+@"];
-         
          const data = {
-         labels: labels,
-         datasets: [{
-           label: 'ChurnR',
-           data: ["+churnsString+@"],
-           fill: false,
-           borderColor: 'rgb(75, 192, 192)',
-           tension: 0.1
-         }]
-         };
+         datasets: 
+         [{
+             label: 'Involved in Commits',
+             data: ["+commitCount+@"],
+             fill: false,
+             borderColor: 'rgb(75, 192, 192)',
+             tension: 0.1
+           },
+           {
+             label: 'Total Lines Added and Deleted',
+             data: ["+lineChurns+@"],
+             fill: false,
+             borderColor: 'rgb(192, 75, 192)',
+             tension: 0.1
+           }
+         ]};
          
          new Chart(ctx, {
            type: 'line',
