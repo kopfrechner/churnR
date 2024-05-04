@@ -2,7 +2,6 @@
 using ChurnR.Extensions;
 using ChurnR.Options;
 using CommandLine;
-using CommandLine.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
@@ -10,11 +9,8 @@ var parserResult = Parser.Default.ParseArguments<GitOptions, SvnOptions>(args);
 
 parserResult.WithNotParsed(_ =>
 {
-    var helpText = HelpText.AutoBuild(parserResult, h => HelpText.DefaultParsingErrorsHandler(parserResult, h), e => e);
-    Console.Error.Write(helpText);
     Exit(ExitCode.Parameters);
 });
-
 
 var services = new ServiceCollection(); 
 
