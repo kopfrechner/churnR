@@ -8,9 +8,22 @@ public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : Ba
 {
     protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
     {
-        commitCount = string.Join(",", fileChurns.OrderByDescending(x => x.CommitCount).Select(x => "{" + $"x:'{x.FileName}',y:{x.CommitCount}" + "}"));
-        lineChurns = string.Join(",", fileChurns.OrderByDescending(x => x.TotalLineChurns).Select(x => "{" + $"x:'{x.FileName}',y:{x.TotalLineChurns}" + "}"));
-        averageChurnsPerCommit = string.Join(",", fileChurns.OrderByDescending(x => x.AverageLineChurnsPerCommit).Select(x => "{" + $"x:'{x.FileName}',y:{x.AverageLineChurnsPerCommit.ToString(CultureInfo.InvariantCulture)}" + "}"));
+        var churns = fileChurns
+            .Select(file => new
+            {
+                UniqueFileName = fileChurns.Count(x => x.FileName.Equals(file.FileName)) == 1
+                    ? file.FileName
+                    : Path.Combine(file.Path, file.FileName),
+                file.CommitCount,
+                file.TotalLineChurns,
+                file.AverageLineChurnsPerCommit,
+                FileNameCount = file.HistoricFullFileNames.Count
+            }).ToList();
+        
+        commitCount = string.Join(",", churns.OrderByDescending(x => x.CommitCount).Select(x => "{" + $"x:'{x.UniqueFileName}',y:{x.CommitCount}" + "}"));
+        lineChurns = string.Join(",", churns.OrderByDescending(x => x.TotalLineChurns).Select(x => "{" + $"x:'{x.UniqueFileName}',y:{x.TotalLineChurns}" + "}"));
+        averageChurnsPerCommit = string.Join(",", churns.OrderByDescending(x => x.AverageLineChurnsPerCommit).Select(x => "{" + $"x:'{x.UniqueFileName}',y:{x.AverageLineChurnsPerCommit.ToString(CultureInfo.InvariantCulture)}" + "}"));
+        fileNameCount = string.Join(",", churns.OrderByDescending(x => x.FileNameCount).Select(x => "{" + $"x:'{x.UniqueFileName}',y:{x.FileNameCount}" + "}"));
         
         Out.Write(HtmlTemplate);
     }
@@ -18,6 +31,7 @@ public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : Ba
     private static string commitCount = "";
     private static string lineChurns = "";
     private static string averageChurnsPerCommit = "";
+    private static string fileNameCount = "";
     
     private string HtmlTemplate => @"
         <!DOCTYPE html>
@@ -31,6 +45,9 @@ public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : Ba
               </div>
               <div>
                  <canvas id=""averageChurnsPerCommit""></canvas>
+              </div>
+              <div>
+                 <canvas id=""fileNameCount""></canvas>
               </div>
               <script src=""https://cdn.jsdelivr.net/npm/chart.js""></script>
               <script>
@@ -71,6 +88,20 @@ public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : Ba
                          data: ["+averageChurnsPerCommit+@"],
                          fill: false,
                          borderColor: 'rgb(192, 192, 75)',
+                         tension: 0.1
+                       }
+                     ]}
+                 });
+
+                 new Chart(document.getElementById('fileNameCount'), {
+                   type: 'line',
+                   data: {
+                     datasets: 
+                     [{
+                         label: 'Rename or Move Count',
+                         data: ["+fileNameCount+@"],
+                         fill: false,
+                         borderColor: 'rgb(75, 156, 215)',
                          tension: 0.1
                        }
                      ]}
