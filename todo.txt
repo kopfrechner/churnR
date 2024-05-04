@@ -1,3 +1,2 @@
 * Create pull request back to forked repo
-* improve logging
 * Create Readme

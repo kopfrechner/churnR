@@ -4,9 +4,9 @@ using ChurnR.Core.CutoffProcessor;
 using ChurnR.Core.Reporter;
 using ChurnR.Core.Support;
 using ChurnR.Core.VcsAdapter;
+using ChurnR.Logging;
 using ChurnR.Options;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace ChurnR.Extensions;
 
@@ -15,12 +15,7 @@ public static class ServiceCollectionExtensions
     public static void AddChurnR(this IServiceCollection serviceCollection, OptionsBase gitOptions)
     {
         // Logger
-        serviceCollection.AddSingleton(Log.Logger = new LoggerConfiguration()
-            // add console as logging target
-            .WriteTo.Console()
-            // set default minimum level
-            .MinimumLevel.Debug()
-            .CreateLogger());
+        serviceCollection.AddSingleton(SerilogSetup.Setup());
         
         // engine
         serviceCollection.AddTransient<Engine>();

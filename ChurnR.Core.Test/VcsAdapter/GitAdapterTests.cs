@@ -39,7 +39,7 @@ public class GitAdapterTests(GitAdapterFixture gitAdapterFixture) : IClassFixtur
         var fileStatistics = gitAdapter.ChangedResources(null).ToList();
 
         // Assert
-        fileStatistics.Count().Should().Be(1);
+        fileStatistics.Count.Should().Be(1);
         fileStatistics.First().Should().BeEquivalentTo(
             new FileStatistics
             {
