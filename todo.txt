@@ -1,7 +1,7 @@
-* Refactor options parsing and execution
 * Create pipeline and add version
 * Push to nuget
 * Create pull request back to forked repo
-* Add file target instead of console target
 * think about some test cases
 * instead of key value pairs, use something else
+* improve logging
+* Create Readme
