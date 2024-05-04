@@ -1,17 +1,19 @@
 ﻿using System.Globalization;
 using ChurnR.Core.Analyzer;
 using ChurnR.Core.CutoffProcessor;
+using Serilog;
 
 namespace ChurnR.Core.Reporter;
 
-public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
+public class ChartJsReporter(ILogger logger, TextWriter output, IProcessor cutOffProcessor) : BaseReporter(logger, output, cutOffProcessor)
 {
-    protected override void WriteImpl(IEnumerable<FileStatistics> fileChurns)
+    protected override void WriteImpl(IEnumerable<FileStatistics> fileStatistics)
     {
-        var churns = fileChurns
+        Logger.Information("Generating ChartJs report");
+        var churns = fileStatistics
             .Select(file => new
             {
-                UniqueFileName = fileChurns.Count(x => x.FileName.Equals(file.FileName)) == 1
+                UniqueFileName = fileStatistics.Count(x => x.FileName.Equals(file.FileName)) == 1
                     ? file.FileName
                     : file.FullFileName,
                 file.CommitCount,
@@ -24,6 +26,8 @@ public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : Ba
         lineChurns = string.Join(",", churns.OrderByDescending(x => x.TotalLineChurns).Select(x => "{" + $"x:'{x.UniqueFileName}',y:{x.TotalLineChurns}" + "}"));
         averageChurnsPerCommit = string.Join(",", churns.OrderByDescending(x => x.AverageLineChurnsPerCommit).Select(x => "{" + $"x:'{x.UniqueFileName}',y:{x.AverageLineChurnsPerCommit.ToString(CultureInfo.InvariantCulture)}" + "}"));
         fileNameCount = string.Join(",", churns.OrderByDescending(x => x.FileNameCount).Select(x => "{" + $"x:'{x.UniqueFileName}',y:{x.FileNameCount}" + "}"));
+        
+        Logger.Debug(HtmlTemplate);
         
         Out.Write(HtmlTemplate);
     }

@@ -29,26 +29,23 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddSingleton(gitOptions);
         
         // processor
+        serviceCollection.AddTransient<MinimalCutoffProcessor>();
+        serviceCollection.AddTransient<PercentCutoffProcessor>();
         serviceCollection.AddTransient<IProcessor>(provider =>
         {
             var options = provider.GetRequiredService<OptionsBase>();
-            return float.TryParse(options.MinimalChurnRate, out var minChurnPercent)
-                ? new PercentCutoffProcessor(minChurnPercent)
-                : int.TryParse(options.MinimalChurnRate, out var minChurn)
-                    ? new MinimalCutoffProcessor(minChurn)
-                    : new MinimalCutoffProcessor(0);
+            return float.TryParse(options.MinimalChurnRate, out _)
+                ? provider.GetRequiredService<PercentCutoffProcessor>()
+                : provider.GetRequiredService<MinimalCutoffProcessor>();
         });
 
         // reporter
         serviceCollection.AddTransient(provider =>
         {
             var options = provider.GetRequiredService<OptionsBase>();
-            if (options.Output == null)
-            {
-                return Console.Out;
-            }
-
-            return new StreamWriter(options.Output);
+            return options.Output == null 
+                ? Console.Out 
+                : new StreamWriter(options.Output);
         });
         serviceCollection.AddTransient<ChartJsReporter>();
         serviceCollection.AddTransient<CsvReporter>();

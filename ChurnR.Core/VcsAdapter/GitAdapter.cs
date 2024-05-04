@@ -1,10 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 using ChurnR.Core.Analyzer;
 using ChurnR.Core.Support;
+using Serilog;
 
 namespace ChurnR.Core.VcsAdapter;
 
-public class GitAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSource)
+public class GitAdapter(ILogger logger, IAdapterDataSource dataSource) : VcsAdapterBase(dataSource)
 {
     // ff88c2849d7e2dcb55d265eb62620c1b07638ea8 split path and file, not properly working now...
     private readonly Regex _commitShaLineMatcher = 
@@ -18,7 +19,6 @@ public class GitAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSour
     private readonly Regex _churnLineMatcher = 
         new("^([0-9]{1,8})\\s{1,8}([0-9]{1,8})\\s{1,8}(.*)$", RegexOptions.Compiled);
     
-    
     public override IEnumerable<FileStatistics> ChangedResources(DateTime? backTo)
     {
         var gitArgument = backTo == null
@@ -30,6 +30,7 @@ public class GitAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSour
         {
             if (_commitShaLineMatcher.IsMatch(line))
             {
+                logger.Debug("Skipping: {0}", line);
                 // skip commit lines
                 continue;
             }
@@ -38,6 +39,7 @@ public class GitAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSour
             {
                 if (!TryChurnMatch(line, out currentFilename, out linesAdded, out linesDeleted))
                 {
+                    logger.Debug("Skipping: {0}", line);
                     continue;
                 }
             }

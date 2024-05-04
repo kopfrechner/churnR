@@ -2,16 +2,20 @@
 using ChurnR.Core.Analyzer;
 using ChurnR.Core.Reporter;
 using ChurnR.Options;
+using Serilog;
 
 namespace ChurnR;
 
 public class Engine(
+    ILogger logger,
     IAnalyzer analyzer,
     IReporter reporter,
     OptionsBase options)
 {
     public ExitCode Run()
     {
+        logger.Information("Engine started with {0}", options);
+        
         if (options.IncludePattern is not null) analyzer.AddInclude(options.IncludePattern);
         if (options.ExcludePatterns.Any()) analyzer.AddExcludes(options.ExcludePatterns);
         
@@ -22,8 +26,9 @@ public class Engine(
                 : analyzer.Analyze();
         
         // report
-        reporter.Write(analysisResult, options.TopRecords ?? int.MaxValue);
+        reporter.Write(analysisResult, options.MinimalChurnRate, options.TopRecords ?? int.MaxValue);
         
+        logger.Information("Engine successfully processed repository");
         return ExitCode.Ok;
     }
 

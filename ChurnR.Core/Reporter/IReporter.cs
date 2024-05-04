@@ -4,5 +4,5 @@ namespace ChurnR.Core.Reporter;
 
 public interface IReporter
 {
-    void Write(AnalysisResult result, int topRecords);
+    void Write(AnalysisResult r, string? targetCutOff, int topRecords);
 }
