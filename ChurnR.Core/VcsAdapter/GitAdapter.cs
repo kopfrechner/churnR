@@ -45,7 +45,11 @@ public class GitAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSour
 
             if (fileStatistic == null)
             {
-                fileStatistic = new FileStatistics{ FileName = fileName };
+                fileStatistic = new FileStatistics
+                {
+                    FileName = Path.GetFileName(fileName),
+                    Path = Path.GetDirectoryName(fileName) ?? ""
+                };
                 fileStatistics.Add(fileStatistic);
             }
 

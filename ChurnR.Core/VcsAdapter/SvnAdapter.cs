@@ -30,7 +30,11 @@ public class SvnAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSour
 
             if (fileStatistic == null)
             {
-                fileStatistic = new FileStatistics{ FileName = file };
+                fileStatistic = new FileStatistics
+                {
+                    FileName = Path.GetFileName(file),
+                    Path = Path.GetDirectoryName(file) ?? ""
+                };
                 fileStatistics.Add(fileStatistic);
             }
 

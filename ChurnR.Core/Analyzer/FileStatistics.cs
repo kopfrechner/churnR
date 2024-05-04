@@ -3,6 +3,7 @@
 public class FileStatistics
 {
     public required string FileName { get; init; }
+    public required string Path { get; init; }
     
     /// <summary>
     /// Number of commits this file was part of
