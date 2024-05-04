@@ -13,7 +13,7 @@ public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : Ba
             {
                 UniqueFileName = fileChurns.Count(x => x.FileName.Equals(file.FileName)) == 1
                     ? file.FileName
-                    : Path.Combine(file.Path, file.FileName),
+                    : file.FullFileName,
                 file.CommitCount,
                 file.TotalLineChurns,
                 file.AverageLineChurnsPerCommit,

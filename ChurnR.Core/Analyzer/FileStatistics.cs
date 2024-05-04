@@ -4,6 +4,8 @@ public class FileStatistics
 {
     public required string FileName { get; init; }
     public required string Path { get; init; }
+
+    public string FullFileName => System.IO.Path.Combine(Path, FileName); 
     
     /// <summary>
     /// For example, when the file was renamed or moved to another folder

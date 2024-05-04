@@ -16,8 +16,8 @@ public class Analyzer(IVcsAdapter adapter) : IAnalyzer
         if (_includes.Count > 0 || _excludes.Count > 0)
         {
             changedResources = changedResources.Where(x => 
-                (_excludes.Count == 0 || _excludes.All(y => !y.IsMatch(x.FileName))) && 
-                (_includes.Count == 0 || _includes.Any(y => y.IsMatch(x.FileName))));
+                (_excludes.Count == 0 || _excludes.All(y => !y.IsMatch(x.FullFileName))) && 
+                (_includes.Count == 0 || _includes.Any(y => y.IsMatch(x.FullFileName))));
         }
         
         return new AnalysisResult
