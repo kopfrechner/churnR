@@ -12,6 +12,7 @@
 
     <!-- .NET tool -->
     <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackAsTool>true</PackAsTool>
         <IsPackable>true</IsPackable>
         <ToolCommandName>ChurnR</ToolCommandName>
@@ -20,11 +21,15 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/kopfrechner/churnR</RepositoryUrl>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
     
     <ItemGroup>
       <ProjectReference Include="..\ChurnR.Core\ChurnR.Core.csproj" />
     </ItemGroup>
-
+    
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
