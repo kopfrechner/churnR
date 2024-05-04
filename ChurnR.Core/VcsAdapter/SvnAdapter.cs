@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using ChurnR.Core.Analyzer;
 using ChurnR.Core.Support;
 
 namespace ChurnR.Core.VcsAdapter;
@@ -6,25 +7,36 @@ namespace ChurnR.Core.VcsAdapter;
 public class SvnAdapter : VcsAdapterBase
 {
     private readonly Regex _matcher = new(@"\W*[A,M]\W+(\/.*)\b",RegexOptions.Compiled);
-    public override IEnumerable<string> ChangedResources()
+    
+    public override IEnumerable<FileStatistics> ChangedResources(DateTime? backTo)
     {
-        var text = DataSource.GetDataWithQuery("svn", "log --verbose");
-        return Parse(text);
-    }
+        var svnArgument = backTo == null
+            ?  "log --verbose"
+            : $"log --revision {{{backTo:yyyy-MM-dd}}}:{{{DateTime.Now:yyyy-MM-dd}}} --verbose";
+        
+        var fileStatistics = new List<FileStatistics>();
+        foreach (var line in DataSource.GetDataWithQuery("svn", svnArgument))
+        {
+            var matchingResult = _matcher.Match(line);
+            if (!matchingResult.Success || matchingResult.Groups.Count != 2)
+            {
+                continue;
+            }
 
-    public override IEnumerable<string> ChangedResources(DateTime backTo)
-    {
-        var text = DataSource.GetDataWithQuery("svn", $"log --revision {{{backTo:yyyy-MM-dd}}}:{{{DateTime.Now:yyyy-MM-dd}}} --verbose");
-        return Parse(text);
-    }
+            var file = matchingResult.Groups[1].Value;
 
-    public override IEnumerable<string> ParseImpl(string text)
-    {
-        var strings = text.SplitLines();
-        return from s in strings
-               select _matcher.Match(s)
-                   into match
-                   where match.Success && match.Groups.Count == 2
-                   select match.Groups[1].Value;
+            var fileStatistic = fileStatistics.FirstOrDefault(x =>
+                x.FileName.Equals(file, StringComparison.InvariantCultureIgnoreCase));
+
+            if (fileStatistic == null)
+            {
+                fileStatistic = new FileStatistics{ FileName = file };
+                fileStatistics.Add(fileStatistic);
+            }
+
+            fileStatistic.CommitCount++;
+        }
+
+        return fileStatistics;
     }
 }

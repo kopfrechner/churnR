@@ -25,11 +25,6 @@ public abstract record OptionsBase
         Required = false,
         HelpText = "Type of report to output. Use one of: table (default), xml, csv")]
     public Reporter Reporter { get; set; } = Reporter.Table;
-    
-    [Option('i', "input", 
-        Required = false, 
-        HelpText = "Get input from a file instead of running a versioning system. Must specify correct adapter via -a.")]
-    public string? InputFile { get; set; }
 
     [Option('x', "exclude",
         Required = false,

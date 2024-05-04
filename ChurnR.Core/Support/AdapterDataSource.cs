@@ -5,9 +5,8 @@ namespace ChurnR.Core.Support;
 
 public class AdapterDataSource : IAdapterDataSource
 {
-    public string GetDataWithQuery(string program, string args = "")
+    public IEnumerable<string> GetDataWithQuery(string program, string args = "")
     {
-        var sb = new StringBuilder();
         var process = new Process 
         {
             StartInfo = new ProcessStartInfo
@@ -24,10 +23,10 @@ public class AdapterDataSource : IAdapterDataSource
         
         while (!process.StandardOutput.EndOfStream)
         {
-            sb.AppendLine(process.StandardOutput.ReadLine());
+            // use yield to immediately process this line due to memory management
+            yield return process.StandardOutput.ReadLine() ?? "";
         }
         
         process.WaitForExit();
-        return sb.ToString();
     }
 }

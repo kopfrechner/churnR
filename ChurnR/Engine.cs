@@ -2,32 +2,21 @@
 using ChurnR.Core.Analyzer;
 using ChurnR.Core.Reporter;
 using ChurnR.Options;
-using Serilog;
 
 namespace ChurnR;
 
 public class Engine(
     IAnalyzer analyzer,
     IReporter reporter,
-    OptionsBase options,
-    ILogger logger)
+    OptionsBase options)
 {
     public ExitCode Run()
     {
-        // setup analyzer
-        if (options.InputFile != null && !File.Exists(options.InputFile))
-        {
-            logger.Error("Cannot find file {0} to read from.", options.InputFile);
-            return ExitCode.Error;
-        }
-        
         if (options.IncludePattern is not null) analyzer.AddInclude(options.IncludePattern);
         if (options.ExcludePatterns.Any()) analyzer.AddExcludes(options.ExcludePatterns);
         
         // analyze
-        var analysisResult =
-            options.InputFile != null  
-                ? analyzer.Analyze(File.ReadAllText(options.InputFile)) : 
+        var analysisResult = 
             TryGetCalculateStartDate(options.FromDate, out var startDate)
                 ? analyzer.Analyze(startDate)
                 : analyzer.Analyze();
