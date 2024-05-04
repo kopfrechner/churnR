@@ -4,7 +4,7 @@ using ChurnR.Core.Support;
 
 namespace ChurnR.Core.VcsAdapter;
 
-public class SvnAdapter : VcsAdapterBase
+public class SvnAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSource)
 {
     private readonly Regex _matcher = new(@"\W*[A,M]\W+(\/.*)\b",RegexOptions.Compiled);
     

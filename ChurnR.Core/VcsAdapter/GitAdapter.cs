@@ -1,8 +1,9 @@
 ﻿using ChurnR.Core.Analyzer;
+using ChurnR.Core.Support;
 
 namespace ChurnR.Core.VcsAdapter;
 
-public class GitAdapter : VcsAdapterBase
+public class GitAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSource)
 {
     public override IEnumerable<FileStatistics> ChangedResources(DateTime? backTo)
     {
