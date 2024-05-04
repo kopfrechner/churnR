@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
-using ChurnR.Core.Analyzers;
-using ChurnR.Core.Reporters;
+using ChurnR.Core.Analyzer;
+using ChurnR.Core.Reporter;
 using ChurnR.Options;
 using Serilog;
 
@@ -9,14 +9,15 @@ namespace ChurnR;
 public class Engine(
     IAnalyzer analyzer,
     IReporter reporter,
-    OptionsBase options)
+    OptionsBase options,
+    ILogger logger)
 {
     public ExitCode Run()
     {
-        // Setup analyzer
+        // setup analyzer
         if (options.InputFile != null && !File.Exists(options.InputFile))
         {
-            Log.Error("Cannot find file {0} to read from.", options.InputFile);
+            logger.Error("Cannot find file {0} to read from.", options.InputFile);
             return ExitCode.Error;
         }
         

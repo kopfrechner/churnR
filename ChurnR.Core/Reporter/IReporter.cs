@@ -1,6 +1,6 @@
-﻿using ChurnR.Core.Analyzers;
+﻿using ChurnR.Core.Analyzer;
 
-namespace ChurnR.Core.Reporters;
+namespace ChurnR.Core.Reporter;
 
 public interface IReporter
 {

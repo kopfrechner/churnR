@@ -1,4 +1,4 @@
-﻿namespace ChurnR.Core.Processors.Cutoff;
+﻿namespace ChurnR.Core.CutoffProcessor;
 
 public class PercentCutoffProcessor(float percent) : IProcessor
 {

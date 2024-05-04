@@ -1,4 +1,4 @@
-﻿namespace ChurnR.Core.Analyzers;
+﻿namespace ChurnR.Core.Analyzer;
 
 public class AnalysisResult
 {

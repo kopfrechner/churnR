@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using ChurnR.Core.VcsAdapter;
 
-namespace ChurnR.Core.Analyzers;
+namespace ChurnR.Core.Analyzer;
 
 public class Analyzer(IVcsAdapter adapter) : IAnalyzer
 {

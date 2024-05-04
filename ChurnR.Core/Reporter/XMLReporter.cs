@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
 using System.Xml;
-using ChurnR.Core.Processors;
+using ChurnR.Core.CutoffProcessor;
 
-namespace ChurnR.Core.Reporters;
+namespace ChurnR.Core.Reporter;
 
 public class XmlReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {

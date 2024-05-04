@@ -1,7 +1,7 @@
-﻿using ChurnR.Core.Processors;
+﻿using ChurnR.Core.CutoffProcessor;
 using Serilog;
 
-namespace ChurnR.Core.Reporters;
+namespace ChurnR.Core.Reporter;
 
 public class SimpleReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {

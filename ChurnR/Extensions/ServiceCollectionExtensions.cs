@@ -1,9 +1,7 @@
-﻿using ChurnR.Commands;
-using ChurnR.Core;
-using ChurnR.Core.Analyzers;
-using ChurnR.Core.Processors;
-using ChurnR.Core.Processors.Cutoff;
-using ChurnR.Core.Reporters;
+﻿using ChurnR.Core;
+using ChurnR.Core.Analyzer;
+using ChurnR.Core.CutoffProcessor;
+using ChurnR.Core.Reporter;
 using ChurnR.Core.Support;
 using ChurnR.Core.VcsAdapter;
 using ChurnR.Options;
@@ -17,7 +15,7 @@ public static class ServiceCollectionExtensions
     public static void AddChurnR(this IServiceCollection serviceCollection, OptionsBase gitOptions)
     {
         // Logger
-        serviceCollection.AddSingleton(new LoggerConfiguration()
+        serviceCollection.AddSingleton(Log.Logger = new LoggerConfiguration()
             // add console as logging target
             .WriteTo.Console()
             // set default minimum level

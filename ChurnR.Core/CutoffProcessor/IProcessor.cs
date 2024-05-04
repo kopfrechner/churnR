@@ -1,4 +1,4 @@
-﻿namespace ChurnR.Core.Processors;
+﻿namespace ChurnR.Core.CutoffProcessor;
 
 public interface IProcessor
 {

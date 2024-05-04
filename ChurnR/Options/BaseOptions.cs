@@ -1,5 +1,5 @@
-using ChurnR.Commands;
 using ChurnR.Core;
+using ChurnR.Core.Reporter;
 using CommandLine;
 
 namespace ChurnR.Options;

@@ -1,4 +1,4 @@
-﻿namespace ChurnR.Commands;
+﻿namespace ChurnR.Core.Reporter;
 
 public enum Reporter
 {

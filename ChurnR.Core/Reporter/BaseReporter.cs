@@ -1,7 +1,7 @@
-﻿using ChurnR.Core.Analyzers;
-using ChurnR.Core.Processors;
+﻿using ChurnR.Core.Analyzer;
+using ChurnR.Core.CutoffProcessor;
 
-namespace ChurnR.Core.Reporters;
+namespace ChurnR.Core.Reporter;
 
 public abstract class BaseReporter(TextWriter output, IProcessor cutOffProcessor) : IReporter
 {
