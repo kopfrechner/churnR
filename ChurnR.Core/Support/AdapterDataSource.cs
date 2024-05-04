@@ -23,8 +23,14 @@ public class AdapterDataSource : IAdapterDataSource
         
         while (!process.StandardOutput.EndOfStream)
         {
+            var line = process.StandardOutput.ReadLine();
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+            
             // use yield to immediately process this line due to memory management
-            yield return process.StandardOutput.ReadLine() ?? "";
+            yield return line;
         }
         
         process.WaitForExit();
