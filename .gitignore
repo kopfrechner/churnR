@@ -56,3 +56,7 @@ stylecop.*
 tf.log
 tf.log.result
 out
+
+# idea
+.idea/
+*/nupkg/*
