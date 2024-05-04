@@ -33,7 +33,8 @@ public class SvnAdapter(IAdapterDataSource dataSource) : VcsAdapterBase(dataSour
                 fileStatistic = new FileStatistics
                 {
                     FileName = Path.GetFileName(file),
-                    Path = Path.GetDirectoryName(file) ?? ""
+                    Path = Path.GetDirectoryName(file) ?? "",
+                    HistoricFullFileNames = new HashSet<string> { file }
                 };
                 fileStatistics.Add(fileStatistic);
             }
