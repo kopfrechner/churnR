@@ -36,5 +36,10 @@ public abstract record OptionsBase
         HelpText = "Include resources matching this regular expression")]
     public string? IncludePattern { get; set; }
     
+    [Option('o', "output",
+        Required = false, 
+        HelpText = "Write to a specific file")]
+    public string? Output { get; set; }
+    
     public abstract Vcs TargetVcs { get; }
 }

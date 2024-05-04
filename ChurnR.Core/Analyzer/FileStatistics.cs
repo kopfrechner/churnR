@@ -23,4 +23,9 @@ public class FileStatistics
     /// Sum of <see cref="LinesAdded"/> + <see cref="LinesDeleted"/>
     /// </summary>
     public int TotalLineChurns => LinesAdded + LinesDeleted;
+    
+    /// <summary>
+    /// Sum of <see cref="LinesAdded"/> + <see cref="LinesDeleted"/>
+    /// </summary>
+    public double AverageLineChurnsPerCommit => (double)TotalLineChurns / CommitCount;
 }

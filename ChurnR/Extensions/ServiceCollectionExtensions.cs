@@ -40,7 +40,16 @@ public static class ServiceCollectionExtensions
         });
 
         // reporter
-        serviceCollection.AddTransient(_ => Console.Out);
+        serviceCollection.AddTransient(provider =>
+        {
+            var options = provider.GetRequiredService<OptionsBase>();
+            if (options.Output == null)
+            {
+                return Console.Out;
+            }
+
+            return new StreamWriter(options.Output);
+        });
         serviceCollection.AddTransient<ChartJsReporter>();
         serviceCollection.AddTransient<CsvReporter>();
         serviceCollection.AddTransient<SimpleReporter>();
