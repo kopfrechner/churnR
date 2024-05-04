@@ -1,9 +1,10 @@
 ﻿using System.Runtime.Serialization;
 using System.Xml;
+using ChurnR.Core.Processors;
 
 namespace ChurnR.Core.Reporters;
 
-public class XmlReporter(TextWriter output) : BaseAnalysisReporter(output)
+public class XmlReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {
     protected override void WriteImpl(IEnumerable<KeyValuePair<string, int>> fileChurns)
     {

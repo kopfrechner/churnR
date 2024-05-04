@@ -1,8 +1,9 @@
-﻿using Serilog;
+﻿using ChurnR.Core.Processors;
+using Serilog;
 
 namespace ChurnR.Core.Reporters;
 
-public class SimpleReporter(TextWriter output) : BaseAnalysisReporter(output)
+public class SimpleReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {
     private static readonly ILogger Logger = Log.Logger;
     

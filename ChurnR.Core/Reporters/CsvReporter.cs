@@ -1,8 +1,9 @@
 ﻿using System.Text;
+using ChurnR.Core.Processors;
 
 namespace ChurnR.Core.Reporters;
 
-public class CsvReporter(TextWriter output) : BaseAnalysisReporter(output)
+public class CsvReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {
     private const string Sep = ",";
     

@@ -1,6 +1,8 @@
-﻿namespace ChurnR.Core.Reporters;
+﻿using ChurnR.Core.Processors;
 
-public class ChartJsReporter(TextWriter output) : BaseAnalysisReporter(output)
+namespace ChurnR.Core.Reporters;
+
+public class ChartJsReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {
     protected override void WriteImpl(IEnumerable<KeyValuePair<string, int>> fileChurns)
     {

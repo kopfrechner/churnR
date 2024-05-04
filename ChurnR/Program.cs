@@ -1,17 +1,39 @@
-﻿using ChurnR.Commands;
+﻿using ChurnR;
+using ChurnR.Extensions;
+using ChurnR.Options;
 using CommandLine;
+using CommandLine.Text;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-Log.Logger = new LoggerConfiguration()
-    // add console as logging target
-    .WriteTo.Console()
-    // set default minimum level
-    .MinimumLevel.Debug()
-    .CreateLogger();
+var parserResult = Parser.Default.ParseArguments<GitOptions, SvnOptions>(args);
+
+parserResult.WithNotParsed(_ =>
+{
+    var helpText = HelpText.AutoBuild(parserResult, h => HelpText.DefaultParsingErrorsHandler(parserResult, h), e => e);
+    Console.Error.Write(helpText);
+    Exit(ExitCode.Parameters);
+});
 
 
-return Parser.Default.ParseArguments<GitCommand, SvnCommand>(args)
-    .MapResult(
-        (GitCommand opts) => opts.Run(),
-        (SvnCommand opts) => opts.Run(),
-        errs => 1);
+var services = new ServiceCollection(); 
+
+parserResult.WithParsed<GitOptions>(gitOptions => services.AddChurnR(gitOptions));
+parserResult.WithParsed<SvnOptions>(svnOptions => services.AddChurnR(svnOptions));
+
+await using var provider = services.BuildServiceProvider();
+using var serviceScope = provider.CreateScope();
+var engine = serviceScope.ServiceProvider.GetRequiredService<Engine>();
+
+Exit(engine.Run());
+
+
+void Exit(ExitCode exitCode, string? message = null)
+{
+    if (!string.IsNullOrWhiteSpace(message))
+    {
+        Log.Logger.Fatal(message);
+    }
+
+    Environment.Exit((int)exitCode);
+}

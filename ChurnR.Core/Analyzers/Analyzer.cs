@@ -3,7 +3,7 @@ using ChurnR.Core.VcsAdapter;
 
 namespace ChurnR.Core.Analyzers;
 
-public class Analyzer(IVcsAdapter adapter)
+public class Analyzer(IVcsAdapter adapter) : IAnalyzer
 {
     private readonly List<Regex> _includes = [];
     private readonly List<Regex> _excludes = [];

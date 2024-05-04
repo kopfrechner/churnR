@@ -1,31 +1,25 @@
 ﻿using System.Text;
-using ChurnR.Core.Analyzers;
 using ChurnR.Core.Processors;
 
 namespace ChurnR.Core.Reporters;
 
-public class TableReporter(TextWriter output) : IAnalysisReporter
+public class TableReporter(TextWriter output, IProcessor cutOffProcessor) : BaseReporter(output, cutOffProcessor)
 {
-    public void Write(AnalysisResult r, IProcessor cutoffPolicy , int top)
+    protected override void WriteImpl(IEnumerable<KeyValuePair<string, int>> fileChurns)
     {
-        if (r.FileChurn.Any() == false)
-            return;
-
-        var max = r.FileChurn.Max(x => x.Key.Length);
-        var i = r.FileChurn.FirstOrDefault().Value.ToString().Length;
+        var max = fileChurns.Max(x => x.Key.Length);
+        var i = fileChurns.FirstOrDefault().Value.ToString().Length;
         
-        //padding
-        
+        // padding
         var total = max + i + 3; //separators | .. | .. |
         var hline = "+".PadRight(total+3, '-')+"+";
         var sb = new StringBuilder();
         sb.AppendLine(hline);
-        foreach (var kvp in cutoffPolicy.Apply(r.FileChurn).Take(top))
+        foreach (var kvp in fileChurns)
         {
             sb.Append("| ").Append(kvp.Key.PadRight(max)).Append(" | ").Append(kvp.Value.ToString().PadRight(i)).AppendLine(" |");
         }
         sb.AppendLine(hline);
         output.Write(sb.ToString());
-        output.Flush();
     }
 }

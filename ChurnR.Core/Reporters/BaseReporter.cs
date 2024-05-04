@@ -3,16 +3,16 @@ using ChurnR.Core.Processors;
 
 namespace ChurnR.Core.Reporters;
 
-public abstract class BaseAnalysisReporter(TextWriter output) : IAnalysisReporter
+public abstract class BaseReporter(TextWriter output, IProcessor cutOffProcessor) : IReporter
 {
     protected readonly TextWriter Out = output;
 
-    public void Write(AnalysisResult r, IProcessor cutoffPolicy, int topRecords)
+    public void Write(AnalysisResult r, int topRecords)
     {
         if (r.FileChurn.Any() == false)
             return;
 
-        var fileChurns = cutoffPolicy.Apply(r.FileChurn).Take(topRecords);
+        var fileChurns = cutOffProcessor.Apply(r.FileChurn).Take(topRecords);
 
         WriteImpl(fileChurns);
         
