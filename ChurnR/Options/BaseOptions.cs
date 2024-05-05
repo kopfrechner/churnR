@@ -23,7 +23,7 @@ public abstract record OptionsBase
 
     [Option('r', "report",
         Required = false,
-        HelpText = "Type of report to output. Use one of: table (default), xml, csv")]
+        HelpText = "Type of report to output. Use one of: table (default), xml, csv, chartjs, simple")]
     public Reporter Reporter { get; set; } = Reporter.Table;
 
     [Option('x', "exclude",
@@ -38,12 +38,12 @@ public abstract record OptionsBase
     
     [Option('o', "output",
         Required = false, 
-        HelpText = "Write report to a specific file")]
+        HelpText = "When set, writes the report to a specific file, to console otherwise.")]
     public string? Output { get; set; }
     
     [Option('p', "path", 
         Required = false, 
-        HelpText = "Set path to your repository")]
+        HelpText = "Set path to your repository otherwise defaults to current directory.")]
     public string? ExecutionDirectory { get; set; }
     
     public abstract Vcs TargetVcs { get; }
