@@ -2,5 +2,5 @@
 
 public interface IAdapterDataSource
 {
-    IEnumerable<string> GetDataWithQuery(string program, string args);
+    IEnumerable<string> GetDataWithQuery(string program, string args, string? executionDirectory);
 }

@@ -5,8 +5,14 @@ namespace ChurnR.Core.Support;
 
 public class AdapterDataSource(ILogger logger) : IAdapterDataSource
 {
-    public IEnumerable<string> GetDataWithQuery(string program, string args = "")
+    public IEnumerable<string> GetDataWithQuery(string program, string args, string? executionDirectory)
     {
+        if (!Path.Exists(executionDirectory))
+        {
+            logger.Error("The specified executionDirectory '{0}' does not exist, skipping", executionDirectory);
+            yield break;
+        }
+        
         var process = new Process 
         {
             StartInfo = new ProcessStartInfo
@@ -16,6 +22,7 @@ public class AdapterDataSource(ILogger logger) : IAdapterDataSource
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 CreateNoWindow = true,
+                WorkingDirectory = executionDirectory ?? ""
             }
         };
         

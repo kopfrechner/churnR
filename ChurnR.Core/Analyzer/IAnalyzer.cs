@@ -2,7 +2,7 @@
 
 public interface IAnalyzer
 {
-    AnalysisResult Analyze(DateTime? backTo = null);
+    AnalysisResult Analyze(string? executionDirectory = null, DateTime? backTo = null);
     void AddInclude(string pattern);
     void AddExcludes(IEnumerable<string> patterns);
 }

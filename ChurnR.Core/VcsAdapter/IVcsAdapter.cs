@@ -4,5 +4,5 @@ namespace ChurnR.Core.VcsAdapter;
 
 public interface IVcsAdapter
 {
-    IEnumerable<FileStatistics> ChangedResources(DateTime? backTo);
+    IEnumerable<FileStatistics> ChangedResources(DateTime? backTo, string? executionDirectory);
 }

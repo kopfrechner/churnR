@@ -14,7 +14,7 @@ public class GitAdapterTests(GitAdapterFixture gitAdapterFixture) : IClassFixtur
         var gitAdapter = gitAdapterFixture.CreateGitAdapterForLine(line);
         
         // Act
-        var fileStatistics = gitAdapter.ChangedResources(null);
+        var fileStatistics = gitAdapter.ChangedResources(null, null);
         
         // Assert
         fileStatistics.Should().BeEmpty();
@@ -36,7 +36,7 @@ public class GitAdapterTests(GitAdapterFixture gitAdapterFixture) : IClassFixtur
         var gitAdapter = gitAdapterFixture.CreateGitAdapterForLine(line);
 
         // Act
-        var fileStatistics = gitAdapter.ChangedResources(null).ToList();
+        var fileStatistics = gitAdapter.ChangedResources(null, null).ToList();
 
         // Assert
         fileStatistics.Count.Should().Be(1);

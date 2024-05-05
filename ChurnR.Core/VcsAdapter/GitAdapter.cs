@@ -19,14 +19,14 @@ public class GitAdapter(ILogger logger, IAdapterDataSource dataSource) : VcsAdap
     private readonly Regex _churnLineMatcher = 
         new("^([0-9]{1,8})\\s{1,8}([0-9]{1,8})\\s{1,8}(.*)$", RegexOptions.Compiled);
     
-    public override IEnumerable<FileStatistics> ChangedResources(DateTime? backTo)
+    public override IEnumerable<FileStatistics> ChangedResources(DateTime? backTo, string? executionDirectory)
     {
         var gitArgument = backTo == null
             ? "log  --format=oneline --numstat"
             : $"log --after={backTo:yyyy-MM-dd} --format=oneline --numstat";
         
         var fileStatistics = new List<FileStatistics>();
-        foreach (var line in DataSource.GetDataWithQuery("git", gitArgument))
+        foreach (var line in DataSource.GetDataWithQuery("git", gitArgument, executionDirectory))
         {
             if (_commitShaLineMatcher.IsMatch(line))
             {

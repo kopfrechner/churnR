@@ -28,7 +28,7 @@ public abstract record OptionsBase
 
     [Option('x', "exclude",
         Required = false,
-        HelpText = "Exclude resources matching this regular expression")]
+        HelpText = "Exclude resources matching a list of regular expressions")]
     public IEnumerable<string> ExcludePatterns { get; set; } = new List<string>();
 
     [Option('n', "include",
@@ -38,8 +38,13 @@ public abstract record OptionsBase
     
     [Option('o', "output",
         Required = false, 
-        HelpText = "Write to a specific file")]
+        HelpText = "Write report to a specific file")]
     public string? Output { get; set; }
+    
+    [Option('p', "path", 
+        Required = false, 
+        HelpText = "Set path to your repository")]
+    public string? ExecutionDirectory { get; set; }
     
     public abstract Vcs TargetVcs { get; }
 }

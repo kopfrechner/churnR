@@ -22,8 +22,8 @@ public class Engine(
         // analyze
         var analysisResult = 
             TryGetCalculateStartDate(options.FromDate, out var startDate)
-                ? analyzer.Analyze(startDate)
-                : analyzer.Analyze();
+                ? analyzer.Analyze(options.ExecutionDirectory, startDate)
+                : analyzer.Analyze(options.ExecutionDirectory);
         
         // report
         reporter.Write(analysisResult, options.MinimalChurnRate, options.TopRecords ?? int.MaxValue);

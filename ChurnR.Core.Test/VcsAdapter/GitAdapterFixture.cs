@@ -13,9 +13,9 @@ public class GitAdapterFixture
     public IVcsAdapter CreateGitAdapterForLine(string line)
     {
         AdapterDataSourceMock
-            .Setup(x => x.GetDataWithQuery(It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GetDataWithQuery(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
             .Returns([line]);
         
         return new GitAdapter(LoggerMock, AdapterDataSourceMock.Object);
-    } 
+    }
 }
