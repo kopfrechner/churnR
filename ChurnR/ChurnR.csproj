@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
 
         <Version>0.0.0</Version>
-        <Authors>Christoph Kopf</Authors>
+        <Authors>Dotan Nahum</Authors>
     </PropertyGroup>
 
     <!-- .NET tool -->
@@ -17,9 +17,7 @@
         <IsPackable>true</IsPackable>
         <ToolCommandName>ChurnR</ToolCommandName>
         <PackageOutputPath>./nupkg</PackageOutputPath>
-        <PackageId>Kopfrechner.ChurnR</PackageId>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/kopfrechner/churnR</RepositoryUrl>
+        <PackageId>ChurnR</PackageId>
     </PropertyGroup>
 
     <ItemGroup>

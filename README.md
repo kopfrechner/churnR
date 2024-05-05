@@ -1,7 +1,3 @@
-
-![Build and test](https://github.com/kopfrechner/churnr/actions/workflows/dotnet.yml/badge.svg) 
-![Release to Nuget.org](https://github.com/kopfrechner/churnr/actions/workflows/release.yml/badge.svg)
-
 ChurnR
 ======
 
@@ -10,10 +6,6 @@ Churn can help you detect which files are changed the most in their lifetime.
 This helps identify potential bug hives, and improper design.
 
 Easily install ChurnR as dotnet tool and start analyze your code churn
-
-```
-dotnet tool install --global Kopfrechner.ChurnR
-```
 
 ChurnR currently supports file-level churns for
 
@@ -82,15 +74,6 @@ Any combination of parameters work.
 	$ ChurnR git -x exe$ .*json.*         # exclude resources that end with 'exe' or contain 'json'  
     $ ChurnR git -p ../path/to/repo/      # specify a path to the repo to analyze	
     $ ChurnR git -r chartjs -o chart.html # report output as chartjs and write to chart.html file
-
-This is a sample output for using ChartJs on ChurnR-repository:
-    
-    $ ChurnR.exe git -r chartjs -o chart.html -n cs$
-
-![Commits per File](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/CommitsPerFile.png)
-![Total line churn per File](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/TotalLineChurnPerFile.png)
-![Average Churn Per Commit](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/AverageChurnPerCommitPerFile.png)
-![File renames or moves](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/RenameOrMovesPerFile.png)
 
 Here is another sample of a run, which cuts off at 8, and uses the default table report:
 
