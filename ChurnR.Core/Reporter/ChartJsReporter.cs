@@ -15,7 +15,7 @@ public class ChartJsReporter(ILogger logger, TextWriter output, IProcessor cutOf
         var churns = fileStatistics
             .Select(file => new
             {
-                UniqueFileName = fileStatistics.Count(x => x.FileName.Equals(file.FileName)) == 1
+                UniqueFileName = fileStatistics.Count(x => x.FileName.Equals(file.FileName, StringComparison.InvariantCultureIgnoreCase)) == 1
                     ? file.FileName
                     : file.FullFileName,
                 file.CommitCount,

@@ -26,6 +26,7 @@ public class GitAdapterTests(GitAdapterFixture gitAdapterFixture) : IClassFixtur
     [InlineData("4       5       {B => C}/D.cs", 4, 5, "C/D.cs", "B/D.cs")]
     [InlineData("5       1       A/B.cs", 5, 1, "A/B.cs")]
     [InlineData("1234567 7654321 A/D.cs", 1234567, 7654321, "A/D.cs")]
+    [InlineData("8       76      A/{B => }/C.cs", 8, 76, "A/C.cs", "A/B/C.cs")]
     public void can_skip_commit_lines(
         string line, 
         int expectedLinesAdded, 
@@ -47,7 +48,7 @@ public class GitAdapterTests(GitAdapterFixture gitAdapterFixture) : IClassFixtur
                 LinesDeleted = expectedLinesDeleted,
                 HistoricFullFileNames = expectedHistoryFileNames.ToHashSet(),
                 FileName = Path.GetFileName(expectedHistoryFileNames.First()),
-                Path = Path.GetDirectoryName(expectedHistoryFileNames.First()) ?? "",
+                Path = Path.GetDirectoryName(expectedHistoryFileNames.First())?.Replace("\\", "/") ?? "",
                 CommitCount = 1
             }
         );

@@ -53,7 +53,7 @@ public class GitAdapter(ILogger logger, IAdapterDataSource dataSource) : VcsAdap
                 fileStatistic = new FileStatistics
                 {
                     FileName = Path.GetFileName(currentFilename),
-                    Path = Path.GetDirectoryName(currentFilename) ?? "",
+                    Path = Path.GetDirectoryName(currentFilename)?.Replace("\\", "/") ?? "", // GetDirectoryName creates back slash in windows...
                     HistoricFullFileNames = new HashSet<string>()
                 };
                 fileStatistics.Add(fileStatistic);
@@ -124,8 +124,8 @@ public class GitAdapter(ILogger logger, IAdapterDataSource dataSource) : VcsAdap
         var optionCurrent = churnMatchResult.Groups[5].Value; // moved to
         var postfix = churnMatchResult.Groups[6].Value;
         
-        currentFilename = $"{prefix}{optionCurrent}{postfix}";
-        previousFilename = $"{prefix}{optionPrevious}{postfix}";
+        currentFilename = $"{prefix}{optionCurrent}{postfix}".Replace("//", "/"); // fix A/{B => }/C.cs => A//C.cs
+        previousFilename = $"{prefix}{optionPrevious}{postfix}".Replace("//", "/"); // fix A/{ => B}/C.cs => A//C.cs
         
         return true;
     }
