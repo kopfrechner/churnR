@@ -7,7 +7,7 @@ public class AdapterDataSource(ILogger logger) : IAdapterDataSource
 {
     public IEnumerable<string> GetDataWithQuery(string program, string args, string? executionDirectory)
     {
-        if (!Path.Exists(executionDirectory))
+        if (executionDirectory != null && !Path.Exists(executionDirectory))
         {
             logger.Error("The specified executionDirectory '{0}' does not exist, skipping", executionDirectory);
             yield break;
