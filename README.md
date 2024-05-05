@@ -1,3 +1,7 @@
+
+![Build and test](https://github.com/kopfrechner/churnr/actions/workflows/dotnet.yml/badge.svg) 
+![Release to Nuget.org](https://github.com/kopfrechner/churnr/actions/workflows/release.yml/badge.svg)
+
 ChurnR
 ======
 
