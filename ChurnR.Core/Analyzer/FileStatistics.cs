@@ -1,21 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using ChurnR.Core.Support;
-
-namespace ChurnR.Core.Analyzer;
+﻿namespace ChurnR.Core.Analyzer;
 
 public class FileStatistics
 {
     public required string FileName { get; init; }
 
-    private readonly string _path;
-    
-    public required string Path
-    {
-        get => _path;
-        [MemberNotNull(nameof(_path))] init => _path = PathSanitizer.ToForwardSlashes(value)!;
-    }
+    public required string Path { get; init; }
 
-    public string FullFileName => PathSanitizer.ToForwardSlashes(System.IO.Path.Combine(Path, FileName))!; 
+    public string FullFileName => System.IO.Path.Combine(Path, FileName).Replace("\\", "/"); 
     
     /// <summary>
     /// For example, when the file was renamed or moved to another folder
@@ -49,14 +40,9 @@ public class FileStatistics
 
     public bool HasOrHadFileName(string currentFilename, string? previousFilename)
     {
-        var cleanCurrentFilename = PathSanitizer.ToForwardSlashes(currentFilename);
-        var cleanPreviousFilename = PathSanitizer.ToForwardSlashes(previousFilename);
-        
-        return HistoricFullFileNames
-            .Select(PathSanitizer.ToForwardSlashes)
-            .Any(historicFileName => 
-            historicFileName!.Equals(cleanCurrentFilename, StringComparison.InvariantCultureIgnoreCase) ||
-            historicFileName!.Equals(cleanPreviousFilename, StringComparison.InvariantCultureIgnoreCase)
+        return HistoricFullFileNames.Any(historicFileName => 
+            historicFileName.Equals(currentFilename, StringComparison.InvariantCultureIgnoreCase) ||
+            historicFileName.Equals(previousFilename, StringComparison.InvariantCultureIgnoreCase)
         );
     }
 }
