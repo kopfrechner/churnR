@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using ChurnR.Core.Analyzer;
 using ChurnR.Core.CutoffProcessor;
+using ChurnR.Core.Support;
 using Serilog;
 
 namespace ChurnR.Core.Reporter;
@@ -9,7 +10,7 @@ public class ChartJsReporter(ILogger logger, TextWriter output, IProcessor cutOf
 {
     protected override void WriteImpl(IEnumerable<FileStatistics> fileStatistics)
     {
-        var htmlTemplate = File.ReadAllText("Reporter/Templates/ChurnR_ChartJs_Report_Template.html");
+        var htmlTemplate = GetHtmlTemplate();
         
         Logger.Information("Generating ChartJs report");
         var churns = fileStatistics
@@ -38,6 +39,13 @@ public class ChartJsReporter(ILogger logger, TextWriter output, IProcessor cutOf
         Logger.Debug(htmlTemplate);
         
         Out.Write(htmlTemplate);
+    }
+
+    private static string GetHtmlTemplate()
+    {
+        var resourceName = "Reporter.Templates.ChurnR_ChartJs_Report_Template.html";
+        var targetAssembly = typeof(ChartJsReporter).Assembly;
+        return EmbeddedResourceResolver.ReadEmbeddedResourceFromAssembly(resourceName, targetAssembly);
     }
 }
 

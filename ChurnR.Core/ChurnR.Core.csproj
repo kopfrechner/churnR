@@ -11,6 +11,6 @@
     </ItemGroup>
     
     <ItemGroup>
-        <None Include="Reporter\Templates\ChurnR_ChartJs_Report_Template.html" Pack="true" PackagePath="\Templates" CopyToOutputDirectory="PreserveNewest"/>
+        <EmbeddedResource Include="Reporter\Templates\ChurnR_ChartJs_Report_Template.html" />
     </ItemGroup>
 </Project>
