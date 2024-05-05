@@ -83,10 +83,10 @@ This is a sample output for using ChartJs on ChurnR-repository:
     
     $ ChurnR.exe git -r chartjs -o chart.html -n cs$
 
-![Commits per File](https://github.com/kopfrechner/churnR/blob/master/Assets/CommitsPerFile.png)
-![Total line churn per File](https://github.com/kopfrechner/churnR/blob/master/Assets/TotalLineChurnPerFile.png)
-![Average Churn Per Commit](https://github.com/kopfrechner/churnR/blob/master/Assets/AverageChurnPerCommitPerFile.png)
-![File renames or moves](https://github.com/kopfrechner/churnR/blob/master/Assets/RenameOrMovesPerFile.png)
+![Commits per File](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/CommitsPerFile.png)
+![Total line churn per File](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/TotalLineChurnPerFile.png)
+![Average Churn Per Commit](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/AverageChurnPerCommitPerFile.png)
+![File renames or moves](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/RenameOrMovesPerFile.png)
 
 Here is another sample of a run, which cuts off at 8, and uses the default table report:
 
