@@ -1,3 +1,5 @@
+name: Nuget.org Release
+
 on:
   push:
     tags:
