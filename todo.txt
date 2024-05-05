@@ -1,2 +1,0 @@
-* Create pull request back to forked repo
-* Create Readme
