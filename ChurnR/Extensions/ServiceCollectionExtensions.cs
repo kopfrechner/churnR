@@ -52,11 +52,11 @@ public static class ServiceCollectionExtensions
             var options = provider.GetRequiredService<OptionsBase>();
             return options.Reporter switch
             {
-                Reporter.Table => provider.GetRequiredService<TableReporter>(),
-                Reporter.Xml => provider.GetRequiredService<XmlReporter>(),
-                Reporter.Csv => provider.GetRequiredService<CsvReporter>(),
-                Reporter.ChartJs => provider.GetRequiredService<ChartJsReporter>(),
-                Reporter.Simple => provider.GetRequiredService<SimpleReporter>(),
+                Reporter.table => provider.GetRequiredService<TableReporter>(),
+                Reporter.xml => provider.GetRequiredService<XmlReporter>(),
+                Reporter.csv => provider.GetRequiredService<CsvReporter>(),
+                Reporter.chartjs => provider.GetRequiredService<ChartJsReporter>(),
+                Reporter.simple => provider.GetRequiredService<SimpleReporter>(),
                 _ => throw new ArgumentOutOfRangeException(nameof(options.Reporter), options.Reporter, null)
             };
         });

@@ -2,9 +2,9 @@
 
 public enum Reporter
 {
-    Table,
-    Xml, 
-    Csv,
-    ChartJs,
-    Simple
+    table,
+    xml, 
+    csv,
+    chartjs,
+    simple
 }

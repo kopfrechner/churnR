@@ -24,7 +24,7 @@ public abstract record OptionsBase
     [Option('r', "report",
         Required = false,
         HelpText = "Type of report to output. Use one of: table (default), xml, csv, chartjs, simple")]
-    public Reporter Reporter { get; set; } = Reporter.Table;
+    public Reporter Reporter { get; set; } = Reporter.table;
 
     [Option('x', "exclude",
         Required = false,
