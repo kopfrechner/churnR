@@ -51,17 +51,9 @@ Cross-check file churn with a static code analysis tools to get complex files wi
 Getting Started
 ---------------
 
-Initial help 
+Help for usage
 
-    $ ChurnR help
-    git        Git Repository
-    svn        Subversion Repository
-    help       Display more information on a specific command.
-    version    Display version information.
-
-Help for git repositories
-
-	$ ChurnR git --help
+	$ ChurnR --help
     -d, --from-date    Past date to calculate churn from. Absolute in dd-mm-yyyy or number of days back from now.
     -c, --churn        Minimal churn. Specify either a number for minimum, or float for precent.
     -t, --top          Return this number of top records.
@@ -75,17 +67,17 @@ Help for git repositories
 
 Any combination of parameters work.
 
-	$ ChurnR git -t 5 -c 3                # take top 5, cut off at level 3 and below.
-	$ ChurnR git -c 0.3                   # display files that consist 30% of all changes (0.3)
-	$ ChurnR git -d 24-12-2023            # calculate for 24th of Dec, 2023 up to now.
-	$ ChurnR git -c 2 -r chartjs          # cut off at 2, report output as chartjs.
-	$ ChurnR git -x exe$ .*json.*         # exclude resources that end with 'exe' or contain 'json'  
-    $ ChurnR git -p ../path/to/repo/      # specify a path to the repo to analyze	
-    $ ChurnR git -r chartjs -o chart.html # report output as chartjs and write to chart.html file
+	$ ChurnR -t 5 -c 3                # take top 5, cut off at level 3 and below.
+	$ ChurnR -c 0.3                   # display files that consist 30% of all changes (0.3)
+	$ ChurnR -d 24-12-2023            # calculate for 24th of Dec, 2023 up to now.
+	$ ChurnR -c 2 -r chartjs          # cut off at 2, report output as chartjs.
+	$ ChurnR -x exe$ .*json.*         # exclude resources that end with 'exe' or contain 'json'  
+    $ ChurnR -p ../path/to/repo/      # specify a path to the repo to analyze	
+    $ ChurnR -r chartjs -o chart.html # report output as chartjs and write to chart.html file
 
 This is a sample output for using ChartJs on ChurnR-repository:
     
-    $ ChurnR.exe git -r chartjs -o chart.html -n cs$
+    $ ChurnR.exe -r chartjs -o chart.html -n cs$
 
 ![Commits per File](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/CommitsPerFile.png)
 ![Total line churn per File](https://raw.githubusercontent.com/kopfrechner/churnR/master/Assets/TotalLineChurnPerFile.png)
@@ -94,7 +86,7 @@ This is a sample output for using ChartJs on ChurnR-repository:
 
 Here is another sample of a run, which cuts off at 8, and uses the default table report:
 
-	$ ChurnR git -c 8 -t 10
+	$ ChurnR -c 8 -t 10
 	+-------------------------------------+
     | README.md                      | 18 |
     | ChartJsReporter.cs             | 11 |
@@ -110,7 +102,7 @@ Here is another sample of a run, which cuts off at 8, and uses the default table
 
 And here is an example of taking the top 4 records on ChurnR's git repo, output as xml report.
 
-	$ ChurnR git -t 4 -r xml
+	$ ChurnR -t 4 -r xml
 	<?xml version="1.0" encoding="Codepage - 850"?>
     <NChurnAnalysisResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
       <FileChurns>
