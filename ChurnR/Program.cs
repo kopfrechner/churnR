@@ -1,16 +1,14 @@
 ﻿using ChurnR;
 using ChurnR.Extensions;
-using ChurnR.Options;
 using CommandLine;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 var services = new ServiceCollection();
 
-var parserResult = Parser.Default.ParseArguments<GitOptions, SvnOptions>(args);
+var parserResult = Parser.Default.ParseArguments<Options>(args);
 parserResult.WithNotParsed(_ => Exit(ExitCode.Parameters));
-parserResult.WithParsed<GitOptions>(gitOptions => services.AddChurnR(gitOptions));
-parserResult.WithParsed<SvnOptions>(svnOptions => services.AddChurnR(svnOptions));
+parserResult.WithParsed(options => services.AddChurnR(options));
 
 await using var provider = services.BuildServiceProvider();
 using var serviceScope = provider.CreateScope();
@@ -19,6 +17,7 @@ var engine = serviceScope.ServiceProvider.GetRequiredService<Engine>();
 var result = engine.Run();
 
 Exit(result);
+return;
 
 void Exit(ExitCode exitCode, string? message = null)
 {

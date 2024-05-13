@@ -1,10 +1,9 @@
-using ChurnR.Core;
 using ChurnR.Core.Reporter;
 using CommandLine;
 
-namespace ChurnR.Options;
+namespace ChurnR;
 
-public abstract record OptionsBase
+public record Options
 {
     [Option('d', "from-date",
         Required = false,
@@ -45,6 +44,4 @@ public abstract record OptionsBase
         Required = false, 
         HelpText = "Set path to your repository otherwise defaults to current directory.")]
     public string? ExecutionDirectory { get; set; }
-    
-    public abstract Vcs TargetVcs { get; }
 }

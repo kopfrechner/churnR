@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using ChurnR.Core.Analyzer;
 using ChurnR.Core.Reporter;
-using ChurnR.Options;
 using Serilog;
 
 namespace ChurnR;
@@ -10,7 +9,7 @@ public class Engine(
     ILogger logger,
     IAnalyzer analyzer,
     IReporter reporter,
-    OptionsBase options)
+    Options options)
 {
     public ExitCode Run()
     {

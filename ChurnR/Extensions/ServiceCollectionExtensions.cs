@@ -1,18 +1,17 @@
-﻿using ChurnR.Core;
-using ChurnR.Core.Analyzer;
+﻿using ChurnR.Core.Analyzer;
 using ChurnR.Core.CutoffProcessor;
 using ChurnR.Core.Reporter;
 using ChurnR.Core.Support;
 using ChurnR.Core.VcsAdapter;
 using ChurnR.Logging;
-using ChurnR.Options;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace ChurnR.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddChurnR(this IServiceCollection serviceCollection, OptionsBase gitOptions)
+    public static void AddChurnR(this IServiceCollection serviceCollection, Options gitOptions)
     {
         // Logger
         serviceCollection.AddSingleton(SerilogSetup.Setup());
@@ -28,7 +27,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddTransient<PercentCutoffProcessor>();
         serviceCollection.AddTransient<IProcessor>(provider =>
         {
-            var options = provider.GetRequiredService<OptionsBase>();
+            var options = provider.GetRequiredService<Options>();
             return float.TryParse(options.MinimalChurnRate, out _)
                 ? provider.GetRequiredService<PercentCutoffProcessor>()
                 : provider.GetRequiredService<MinimalCutoffProcessor>();
@@ -37,7 +36,7 @@ public static class ServiceCollectionExtensions
         // reporter
         serviceCollection.AddTransient(provider =>
         {
-            var options = provider.GetRequiredService<OptionsBase>();
+            var options = provider.GetRequiredService<Options>();
             return options.Output == null 
                 ? Console.Out 
                 : new StreamWriter(options.Output);
@@ -49,7 +48,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddTransient<XmlReporter>();
         serviceCollection.AddTransient<IReporter>(provider =>
         {
-            var options = provider.GetRequiredService<OptionsBase>();
+            var options = provider.GetRequiredService<Options>();
             return options.Reporter switch
             {
                 Reporter.table => provider.GetRequiredService<TableReporter>(),
@@ -66,14 +65,21 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddTransient<SvnAdapter>();
         serviceCollection.AddTransient<IVcsAdapter>(provider =>
         {
-            var options = provider.GetRequiredService<OptionsBase>();
-
-            return options.TargetVcs switch
+            var options = provider.GetRequiredService<Options>();
+            var directory = options.ExecutionDirectory ?? "./";
+            
+            if (Path.Exists(Path.Combine(directory, ".git")))
             {
-                Vcs.Git => provider.GetRequiredService<GitAdapter>(),
-                Vcs.Svn => provider.GetRequiredService<SvnAdapter>(),
-                _ => throw new ArgumentOutOfRangeException(nameof(options.TargetVcs), options.TargetVcs, null)
-            };
+                provider.GetRequiredService<GitAdapter>();
+            }
+            else if (Path.Exists(Path.Combine(directory, ".svn")))
+            {
+                provider.GetRequiredService<SvnAdapter>();
+            }
+
+            var logger = provider.GetRequiredService<ILogger>();
+            logger.Error("No VCS found in '{0}'", directory);
+            throw new InvalidOperationException("No VCS found in '{0}'");
         });
         
         // analyzer
