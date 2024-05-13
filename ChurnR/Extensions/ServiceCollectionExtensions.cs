@@ -66,20 +66,21 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddTransient<IVcsAdapter>(provider =>
         {
             var options = provider.GetRequiredService<Options>();
-            var directory = options.ExecutionDirectory ?? "./";
+            var directory = options.ExecutionDirectory ?? Directory.GetCurrentDirectory();
             
             if (Path.Exists(Path.Combine(directory, ".git")))
             {
-                provider.GetRequiredService<GitAdapter>();
+                return provider.GetRequiredService<GitAdapter>();
             }
-            else if (Path.Exists(Path.Combine(directory, ".svn")))
+            
+            if (Path.Exists(Path.Combine(directory, ".svn")))
             {
-                provider.GetRequiredService<SvnAdapter>();
+                return provider.GetRequiredService<SvnAdapter>();
             }
 
             var logger = provider.GetRequiredService<ILogger>();
-            logger.Error("No VCS found in '{0}'", directory);
-            throw new InvalidOperationException("No VCS found in '{0}'");
+            logger.Warning("VCS not found in '{0}', using {1} as default", directory, "git");
+            return provider.GetRequiredService<GitAdapter>();
         });
         
         // analyzer
