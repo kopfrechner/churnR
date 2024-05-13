@@ -9,7 +9,7 @@ public class Analyzer(ILogger logger, IVcsAdapter adapter) : IAnalyzer
     private readonly List<Regex> _includes = [];
     private readonly List<Regex> _excludes = [];
 
-    public AnalysisResult Analyze(string? executionDirectory, DateTime? backTo)
+    public IAnalysisResult Analyze(string? executionDirectory, DateTime? backTo)
     {
         logger.Information("Collecting changed resources");
         var changedResources = adapter.ChangedResources(backTo, executionDirectory);

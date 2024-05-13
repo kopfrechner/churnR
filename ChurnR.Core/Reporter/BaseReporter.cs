@@ -9,7 +9,7 @@ public abstract class BaseReporter(ILogger logger, TextWriter output, IProcessor
     protected readonly TextWriter Out = output;
     protected ILogger Logger => logger;
 
-    public void Write(AnalysisResult analysisResult, string? targetCutOff, int topRecords)
+    public void Write(IAnalysisResult analysisResult, string? targetCutOff, int topRecords)
     {
         if (!analysisResult.FileChurn.Any())
         {
