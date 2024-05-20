@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChurnR.Core", "ChurnR.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChurnR.Core.Test", "ChurnR.Core.Test\ChurnR.Core.Test.csproj", "{817B5A76-FDAB-43AC-B946-D421CEDC8FB7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{4E403AA2-DB02-4C81-88F8-F2C6DC82C183}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E403AA2-DB02-4C81-88F8-F2C6DC82C183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E403AA2-DB02-4C81-88F8-F2C6DC82C183}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F957FEF-4DB7-4575-ACF4-51F4F9E4066F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F957FEF-4DB7-4575-ACF4-51F4F9E4066F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F957FEF-4DB7-4575-ACF4-51F4F9E4066F}.Release|Any CPU.ActiveCfg = Release|Any CPU
